@@ -5254,7 +5254,7 @@ TEST_P(BcmChassisManagerTest, TestSetPortAdminStateViaConfigPush) {
 TEST_P(BcmChassisManagerTest, TestSetPortLoopbackStateViaConfigPush) {
   ChassisConfig config;
 
-  // Push a config which sets the loopback state to NONE.
+  // Push a config which does not set the loopback state.
   ASSERT_OK(PushTestConfig(&config));
 
   // We have to manually save the port options, since the chassis manager does
@@ -5273,7 +5273,7 @@ TEST_P(BcmChassisManagerTest, TestSetPortLoopbackStateViaConfigPush) {
       .WillRepeatedly(
           DoAll(Invoke(save_port_options), Return(::util::OkStatus())));
 
-  // Check that port loopback state is up.
+  // Check that port loopback state is undefined/unknown.
   auto loopback_state = GetPortLoopbackState(kNodeId, kPortId);
   ASSERT_TRUE(loopback_state.ok());
   EXPECT_EQ(LOOPBACK_UNKNOWN, loopback_state.ValueOrDie());
